@@ -2,6 +2,7 @@ from datetime import timedelta, datetime
 import aircraftlib as aclib
 from prefect import task, Flow, Parameter
 from prefect.schedules import IntervalSchedule
+from prefect.executors import DaskExecutor
 
 
 @task(max_retries=3, retry_delay=timedelta(seconds=10))
@@ -75,4 +76,4 @@ def main():
         load_reference_data(reference_data)
         load_live_data(transformed_live_data)
 
-    flow.run(airport='JFK', radius=10)
+    flow.run(executor=DashExecutor(), airport='JFK', radius=10)
